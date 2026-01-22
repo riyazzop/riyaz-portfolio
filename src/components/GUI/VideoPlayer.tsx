@@ -248,10 +248,11 @@ export default function VideoPlayer({ src, poster, title }: VideoPlayerProps) {
       {/* Video Element */}
       <video
         ref={videoRef}
-        className="w-full aspect-video cursor-pointer"
+        className="w-full aspect-video cursor-pointer relative z-0"
         poster={poster}
         preload="metadata"
         onClick={togglePlay}
+        playsInline
       >
         <source src={src} type="video/mp4" />
         Your browser does not support the video tag.
@@ -265,11 +266,11 @@ export default function VideoPlayer({ src, poster, title }: VideoPlayerProps) {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{ duration: 0.2 }}
-            className="absolute inset-0 flex items-center justify-center bg-black/30 cursor-pointer"
+            className="absolute inset-0 flex items-center justify-center bg-black/30 cursor-pointer z-20"
             onClick={togglePlay}
           >
             <motion.div
-              className="w-20 h-20 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30"
+              className="w-14 h-14 md:w-20 md:h-20 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30"
               whileHover={{
                 scale: 1.1,
                 backgroundColor: "rgba(255,255,255,0.3)",
@@ -294,7 +295,7 @@ export default function VideoPlayer({ src, poster, title }: VideoPlayerProps) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="absolute bottom-0 left-0 right-0 bg-linear-to-t from-black/90 via-black/50 to-transparent pt-20 pb-4 px-4"
+            className="absolute bottom-0 left-0 right-0 bg-linear-to-t from-black/90 via-black/50 to-transparent pt-20 pb-4 px-4 z-30"
           >
             {/* Progress Bar */}
             <div className="mb-3">

@@ -39,7 +39,7 @@ export default function Projects() {
     >
       {/* Minimal 3D Background */}
       <MinimalBackground />
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-6xl mx-auto relative z-10">
         {/* Section header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
