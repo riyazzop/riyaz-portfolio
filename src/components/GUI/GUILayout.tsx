@@ -9,7 +9,7 @@ import Skills from "./Skills";
 import Projects from "./Projects";
 import Experience from "./Experience";
 import Blog from "./Blog";
-import Stats from "./Stats";
+import ActivityStats from "./ActivityStats";
 import Certifications from "./Certifications";
 import Education from "./Education";
 import Contact from "./Contact";
@@ -40,7 +40,7 @@ export default function GUILayout() {
       <Projects />
       <Experience />
       <Blog />
-      <Stats />
+      < ActivityStats />
       <Certifications />
       <Education />
       <Contact />

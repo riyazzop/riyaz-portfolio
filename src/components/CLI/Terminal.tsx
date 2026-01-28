@@ -288,19 +288,30 @@ export default function Terminal() {
             <span className="text-gray-400 text-sm font-medium tracking-wide">
               riyaz@portfolio: ~{currentPath.replace("/home/riyaz", "")}
             </span>
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                toggleSound();
-              }}
-              className={`text-xs px-2 py-1 rounded ${
-                soundEnabled
-                  ? "bg-green-900 text-green-400"
-                  : "bg-gray-800 text-gray-500"
-              }`}
-            >
-              🔊 {soundEnabled ? "ON" : "OFF"}
-            </button>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleSound();
+                }}
+                className={`text-xs px-2 py-1 rounded ${
+                  soundEnabled
+                    ? "bg-green-900 text-green-400"
+                    : "bg-gray-800 text-gray-500"
+                }`}
+              >
+                🔊 {soundEnabled ? "ON" : "OFF"}
+              </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  useModeStore.getState().setMode("gui");
+                }}
+                className="text-xs px-2 py-1 rounded bg-blue-900/50 text-blue-400 hover:bg-blue-800/50 transition-colors"
+              >
+                🖥️ GUI
+              </button>
+            </div>
           </div>
 
           {/* Terminal content */}

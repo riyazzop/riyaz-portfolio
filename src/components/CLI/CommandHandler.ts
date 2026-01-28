@@ -1,7 +1,7 @@
 import { useModeStore } from "@/lib/store";
 import { projects } from "@/lib/data/projects";
 import { skillCategories, allSkills } from "@/lib/data/skills";
-import { experiences } from "@/lib/data/experience";
+import { journeyMilestones } from "@/lib/data/experience";
 import { blogPosts } from "@/lib/data/blogs";
 import {
   personalInfo,
@@ -271,15 +271,14 @@ ${project.github ? `🔗 GitHub: ${project.github}` : ""}
       return {
         output: `
 ╭─────────────────────────────────────────╮
-│       EXPERIENCE & JOURNEY              │
+│       MY JOURNEY                        │
 ╰─────────────────────────────────────────╯
 
-${experiences
+${journeyMilestones
   .map(
-    (exp) => `◉ ${exp.title}
-  ${exp.company}${exp.location ? ` | ${exp.location}` : ""}
-  ${exp.date}
-${exp.description.map((d) => `    • ${d}`).join("\n")}`,
+    (m) => `◉ ${m.period} - ${m.title}
+   Focus: ${m.focus}
+${m.details.map((d) => `    • ${d}`).join("\n")}`,
   )
   .join("\n\n")}
         `.trim(),
