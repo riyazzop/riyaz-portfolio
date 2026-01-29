@@ -61,8 +61,8 @@ export default function Hero() {
           transition={{ delay: 0.3, duration: 0.6 }}
           className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tighter mb-4"
         >
-          <span className="gradient-text">
-            I'm Riyaz...
+          <span className="bg-linear-to-r from-gray-300 via-gray-600 to-gray-800 bg-clip-text text-transparent">
+            I'M RIYAZ...
           </span>
         </motion.h1>
 
