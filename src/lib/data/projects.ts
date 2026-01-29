@@ -41,7 +41,7 @@ export const projects: Project[] = [
     category: "fullstack",
     date: "Dec 2025 - Jan 2026",
     github: "https://github.com/riyazzop/chat-backend",
-    demo: "http://13.203.214.194:3000/chat",
+    demo: "https://chat-frontend-two-gamma.vercel.app",
     demoVideo:
       "https://res.cloudinary.com/dpjn01kfa/video/upload/v1769090660/chat-app_u9vyae.mp4",
     image: "/projects/chat-app.png",
