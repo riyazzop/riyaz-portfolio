@@ -24,7 +24,7 @@ export default function ModeSelector() {
             transition={{ delay: 0.1 }}
           >
             <h1 className="text-3xl font-bold mb-2 tracking-tight">
-              SHAIK RIYAZ BASHA
+              SHAIK RIYAZ
             </h1>
             <p className="text-gray-400 mb-8">
               Full-Stack Developer • AI Enthusiast

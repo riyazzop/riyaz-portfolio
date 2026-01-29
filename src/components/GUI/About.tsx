@@ -79,7 +79,7 @@ export default function About() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="space-y-6"
           >
-            <h3 className="text-2xl font-bold">{personalInfo.name}</h3>
+            <h3 className="text-2xl font-bold">{personalInfo.name} Basha</h3>
             <p className="text-gray-400 leading-relaxed">
               {personalInfo.summary}
             </p>

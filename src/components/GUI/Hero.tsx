@@ -62,7 +62,7 @@ export default function Hero() {
           className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tighter mb-4"
         >
           <span className="gradient-text">
-            {personalInfo.name.toUpperCase()}
+            I'm Riyaz...
           </span>
         </motion.h1>
 

@@ -164,7 +164,7 @@ export default function Certifications() {
                         onClick={() =>
                           handleViewCertificate(cert.image as string)
                         }
-                        className="inline-flex items-center gap-2 px-4 py-2 text-sm bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-colors cursor-pointer pointer-events-auto relative z-20"
+                        className="inline-flex items-center gap-2 px-4 py-2 text-sm bg-gray-600 hover:bg-gray-500 text-white rounded-lg transition-colors cursor-pointer pointer-events-auto relative z-20"
                       >
                         <ImageIcon className="w-4 h-4" />
                         View Certificate
