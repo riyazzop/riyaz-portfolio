@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ChevronDown, FileText, FolderOpen } from "lucide-react";
 import { personalInfo } from "@/lib/data/personal";
@@ -14,6 +14,32 @@ const HeroBackground = dynamic(() => import("../Three/HeroBackground"), {
 
 export default function Hero() {
   const ref = useRef<HTMLDivElement>(null);
+  const fullText = "I'M RIYAZ...";
+  const [displayedText, setDisplayedText] = useState("");
+  const [isTypingComplete, setIsTypingComplete] = useState(false);
+
+  useEffect(() => {
+    let currentIndex = 0;
+    const typingDelay = 100; // ms per character
+
+    const typeNextChar = () => {
+      if (currentIndex < fullText.length) {
+        setDisplayedText(fullText.slice(0, currentIndex + 1));
+        currentIndex++;
+        setTimeout(typeNextChar, typingDelay);
+      } else {
+        setIsTypingComplete(true);
+      }
+    };
+
+    // Start typing after the initial fade-in animation (0.3s delay + 0.6s duration)
+    const startDelay = setTimeout(() => {
+      typeNextChar();
+    }, 300);
+
+    return () => clearTimeout(startDelay);
+  }, []);
+
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
@@ -62,8 +88,15 @@ export default function Hero() {
           className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tighter mb-4"
         >
           <span className="bg-linear-to-r from-gray-300 via-gray-600 to-gray-800 bg-clip-text text-transparent">
-            I'M RIYAZ...
+            {displayedText}
           </span>
+          {!isTypingComplete ? (
+            <span className="inline-block w-1 h-[0.9em] bg-gray-400 ml-1 animate-pulse" />
+          ) : (
+            <span className="bg-linear-to-r from-gray-300 via-gray-600 to-gray-800 bg-clip-text text-transparent animate-pulse">
+              !
+            </span>
+          )}
         </motion.h1>
 
         {/* Title */}
