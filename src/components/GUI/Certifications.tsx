@@ -203,7 +203,7 @@ export default function Certifications() {
               </div>
             ))}
           </motion.div>
-        </div>
+        </div >
 
         {/* CSS Animation */}
         <style jsx>{`
