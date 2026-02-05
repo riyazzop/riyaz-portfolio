@@ -46,7 +46,9 @@ function checkCollision(a: FloatingIcon, b: FloatingIcon): boolean {
   const dx = a.x - b.x;
   const dy = a.y - b.y;
   const distance = Math.sqrt(dx * dx + dy * dy);
-  const minDist = (a.size + b.size) / 2;
+  // Use full icon size plus buffer for edge-to-edge detection
+  const buffer = 15;
+  const minDist = (a.size + b.size) / 2 + buffer;
   return distance < minDist;
 }
 
@@ -54,8 +56,10 @@ function resolveCollision(a: FloatingIcon, b: FloatingIcon): void {
   const dx = b.x - a.x;
   const dy = b.y - a.y;
   const distance = Math.sqrt(dx * dx + dy * dy);
+  const buffer = 15;
+  const minDist = (a.size + b.size) / 2 + buffer;
 
-  if (distance === 0) return;
+  if (distance === 0 || distance > minDist) return;
 
   // Normal vector
   const nx = dx / distance;
@@ -76,19 +80,30 @@ function resolveCollision(a: FloatingIcon, b: FloatingIcon): void {
   const massB = b.size * b.size;
   const totalMass = massA + massB;
 
-  // Update velocities (elastic collision)
-  const impulse = (2 * dvn) / totalMass;
+  // Very soft bounce for smooth collision
+  const restitution = 0.15;
+  const impulse = ((1 + restitution) * dvn) / totalMass;
 
-  a.vx -= impulse * massB * nx * 0.8;
-  a.vy -= impulse * massB * ny * 0.8;
-  b.vx += impulse * massA * nx * 0.8;
-  b.vy += impulse * massA * ny * 0.8;
+  // Ultra smooth velocity interpolation
+  const smoothFactor = 0.05; // Very gradual change
 
-  // Separate overlapping icons
-  const overlap = (a.size + b.size) / 2 - distance;
+  const targetVxA = a.vx - impulse * massB * nx;
+  const targetVyA = a.vy - impulse * massB * ny;
+  const targetVxB = b.vx + impulse * massA * nx;
+  const targetVyB = b.vy + impulse * massA * ny;
+
+  // Interpolate towards target velocities
+  a.vx += (targetVxA - a.vx) * smoothFactor;
+  a.vy += (targetVyA - a.vy) * smoothFactor;
+  b.vx += (targetVxB - b.vx) * smoothFactor;
+  b.vy += (targetVyB - b.vy) * smoothFactor;
+
+  // Very soft separation - gently push apart overlapping icons
+  const overlap = minDist - distance;
   if (overlap > 0) {
-    const separateX = (overlap / 2) * nx;
-    const separateY = (overlap / 2) * ny;
+    const separationStrength = 0.03; // Ultra gradual separation
+    const separateX = overlap * nx * separationStrength;
+    const separateY = overlap * ny * separationStrength;
     a.x -= separateX;
     a.y -= separateY;
     b.x += separateX;
