@@ -136,8 +136,8 @@ export default function Certifications() {
         {/* Infinite scrolling marquee */}
         <div className="relative w-full overflow-hidden">
           {/* Gradient overlays for seamless edges */}
-          <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none" />
-          <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none" />
+          <div className="absolute left-0 top-0 bottom-0 w-32 bg-linear-to-r from-black to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-32 bg-linear-to-l from-black to-transparent z-10 pointer-events-none" />
 
           <motion.div
             initial={{ opacity: 0 }}
@@ -155,7 +155,7 @@ export default function Certifications() {
                 key={`${cert.name}-${index}`}
                 onMouseEnter={() => setIsPaused(true)}
                 onMouseLeave={() => setIsPaused(false)}
-                className="flex-shrink-0 w-[350px] p-6 rounded-2xl bg-gray-900/50 border border-gray-800 hover:border-gray-600 hover:bg-gray-900/80 transition-all cursor-pointer"
+                className="shrink-0 w-[350px] p-6 rounded-2xl bg-gray-900/50 border border-gray-800 hover:border-gray-600 hover:bg-gray-900/80 transition-all cursor-pointer"
               >
                 <div className="flex flex-col gap-4">
                   <div className="flex items-center gap-3">
