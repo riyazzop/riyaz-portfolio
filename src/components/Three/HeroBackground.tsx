@@ -1,318 +1,319 @@
 "use client";
 
-import { useRef, useMemo } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
-import { Float, Stars, MeshDistortMaterial, Sphere } from "@react-three/drei";
-import * as THREE from "three";
+import { useEffect, useRef, useState, useCallback } from "react";
 
-// Animated Torus Knot - Central attraction
-function TorusKnot() {
-  const meshRef = useRef<THREE.Mesh>(null);
-
-  useFrame((state) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.x = state.clock.elapsedTime * 0.2;
-      meshRef.current.rotation.y = state.clock.elapsedTime * 0.3;
-    }
-  });
-
-  return (
-    <Float speed={1.5} rotationIntensity={0.3} floatIntensity={0.5}>
-      <mesh ref={meshRef} position={[0, 0, -2]} scale={2.4}>
-        <torusKnotGeometry args={[1, 0.3, 128, 32]} />
-        <meshStandardMaterial
-          color="#ffffff"
-          wireframe
-          transparent
-          opacity={0.15}
-        />
-      </mesh>
-    </Float>
-  );
+interface FloatingIcon {
+  id: string;
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  size: number;
+  rotation: number;
+  rotationSpeed: number;
+  opacity: number;
+  iconSrc: string;
+  image: HTMLImageElement | null;
 }
 
-// Glowing Sphere with distortion
-function GlowingSphere({ position }: { position: [number, number, number] }) {
-  const meshRef = useRef<THREE.Mesh>(null);
-
-  useFrame((state) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.x = state.clock.elapsedTime * 0.1;
-      meshRef.current.rotation.y = state.clock.elapsedTime * 0.15;
-    }
-  });
-
-  return (
-    <Float speed={2} rotationIntensity={0.2} floatIntensity={0.3}>
-      <Sphere ref={meshRef} args={[0.8, 64, 64]} position={position}>
-        <MeshDistortMaterial
-          color="#808080"
-          transparent
-          opacity={0.2}
-          distort={0.4}
-          speed={2}
-          roughness={0.1}
-        />
-      </Sphere>
-    </Float>
-  );
+function createIcon(
+  width: number,
+  height: number,
+  index: number,
+  iconSrc: string,
+): FloatingIcon {
+  const size = 80 + Math.random() * 70; // 80-150px
+  return {
+    id: `icon-${index}-${Date.now()}-${Math.random()}`,
+    x: size + Math.random() * (width - size * 2),
+    y: size + Math.random() * (height - size * 2),
+    vx: (Math.random() - 0.5) * 1.2,
+    vy: (Math.random() - 0.5) * 1.2,
+    size,
+    rotation: Math.random() * Math.PI * 2,
+    rotationSpeed: (Math.random() - 0.5) * 0.01,
+    opacity: 0.2 + Math.random() * 0.3,
+    iconSrc,
+    image: null,
+  };
 }
 
-// Icosahedron - Geometric beauty
-function Icosahedron({
-  position,
-  scale,
-  speed,
-}: {
-  position: [number, number, number];
-  scale: number;
-  speed: number;
-}) {
-  const meshRef = useRef<THREE.Mesh>(null);
-
-  useFrame((state) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.x = state.clock.elapsedTime * speed;
-      meshRef.current.rotation.y = state.clock.elapsedTime * speed * 0.7;
-    }
-  });
-
-  return (
-    <Float speed={1.5} rotationIntensity={0.4} floatIntensity={0.4}>
-      <mesh ref={meshRef} position={position} scale={scale}>
-        <icosahedronGeometry args={[1, 0]} />
-        <meshStandardMaterial
-          color="#ffffff"
-          wireframe
-          transparent
-          opacity={0.25}
-        />
-      </mesh>
-    </Float>
-  );
+function checkCollision(a: FloatingIcon, b: FloatingIcon): boolean {
+  const dx = a.x - b.x;
+  const dy = a.y - b.y;
+  const distance = Math.sqrt(dx * dx + dy * dy);
+  const minDist = (a.size + b.size) / 2;
+  return distance < minDist;
 }
 
-// Dodecahedron
-function Dodecahedron({
-  position,
-  scale,
-}: {
-  position: [number, number, number];
-  scale: number;
-}) {
-  const meshRef = useRef<THREE.Mesh>(null);
+function resolveCollision(a: FloatingIcon, b: FloatingIcon): void {
+  const dx = b.x - a.x;
+  const dy = b.y - a.y;
+  const distance = Math.sqrt(dx * dx + dy * dy);
 
-  useFrame((state) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.x = state.clock.elapsedTime * 0.15;
-      meshRef.current.rotation.z = state.clock.elapsedTime * 0.1;
-    }
-  });
+  if (distance === 0) return;
 
-  return (
-    <Float speed={2} rotationIntensity={0.3} floatIntensity={0.5}>
-      <mesh ref={meshRef} position={position} scale={scale}>
-        <dodecahedronGeometry args={[1, 0]} />
-        <meshStandardMaterial
-          color="#606060"
-          wireframe
-          transparent
-          opacity={0.2}
-        />
-      </mesh>
-    </Float>
-  );
+  // Normal vector
+  const nx = dx / distance;
+  const ny = dy / distance;
+
+  // Relative velocity
+  const dvx = a.vx - b.vx;
+  const dvy = a.vy - b.vy;
+
+  // Relative velocity along normal
+  const dvn = dvx * nx + dvy * ny;
+
+  // Don't resolve if moving apart
+  if (dvn > 0) return;
+
+  // Collision response with mass based on size
+  const massA = a.size * a.size;
+  const massB = b.size * b.size;
+  const totalMass = massA + massB;
+
+  // Update velocities (elastic collision)
+  const impulse = (2 * dvn) / totalMass;
+
+  a.vx -= impulse * massB * nx * 0.8;
+  a.vy -= impulse * massB * ny * 0.8;
+  b.vx += impulse * massA * nx * 0.8;
+  b.vy += impulse * massA * ny * 0.8;
+
+  // Separate overlapping icons
+  const overlap = (a.size + b.size) / 2 - distance;
+  if (overlap > 0) {
+    const separateX = (overlap / 2) * nx;
+    const separateY = (overlap / 2) * ny;
+    a.x -= separateX;
+    a.y -= separateY;
+    b.x += separateX;
+    b.y += separateY;
+  }
 }
 
-// Ring orbiting
-function OrbitingRing() {
-  const ringRef = useRef<THREE.Mesh>(null);
+export default function HeroBackground() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const iconsRef = useRef<FloatingIcon[]>([]);
+  const animationRef = useRef<number>(0);
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+  const [iconPaths, setIconPaths] = useState<string[]>([]);
+  const [imagesLoaded, setImagesLoaded] = useState(false);
 
-  useFrame((state) => {
-    if (ringRef.current) {
-      ringRef.current.rotation.x = Math.PI / 2;
-      ringRef.current.rotation.z = state.clock.elapsedTime * 0.2;
+  // Fetch icon list from API
+  useEffect(() => {
+    async function fetchIcons() {
+      try {
+        const response = await fetch("/api/icons");
+        const data = await response.json();
+        if (data.icons && data.icons.length > 0) {
+          setIconPaths(data.icons);
+        }
+      } catch (error) {
+        console.error("Failed to fetch icons:", error);
+        // Fallback to known icons
+        setIconPaths([
+          "/icons/react.svg",
+          "/icons/nextjs.svg",
+          "/icons/mongodb.svg",
+          "/icons/mysql.svg",
+          "/icons/python.svg",
+          "/icons/java.svg",
+        ]);
+      }
     }
-  });
-
-  return (
-    <mesh ref={ringRef} position={[0, 0, -2]}>
-      <torusGeometry args={[2.5, 0.02, 16, 100]} />
-      <meshStandardMaterial
-        color="#ffffff"
-        transparent
-        opacity={0.3}
-        emissive="#ffffff"
-        emissiveIntensity={0.1}
-      />
-    </mesh>
-  );
-}
-
-// Particle field
-function ParticleField() {
-  const pointsRef = useRef<THREE.Points>(null);
-  const particleCount = 500;
-
-  const { positions, colors } = useMemo(() => {
-    const positions = new Float32Array(particleCount * 3);
-    const colors = new Float32Array(particleCount * 3);
-
-    for (let i = 0; i < particleCount * 3; i += 3) {
-      // Spread particles in a sphere
-      const theta = Math.random() * Math.PI * 2;
-      const phi = Math.acos(2 * Math.random() - 1);
-      const r = 8 + Math.random() * 12;
-
-      positions[i] = r * Math.sin(phi) * Math.cos(theta);
-      positions[i + 1] = r * Math.sin(phi) * Math.sin(theta);
-      positions[i + 2] = r * Math.cos(phi);
-
-      // White to gray gradient
-      const brightness = 0.5 + Math.random() * 0.5;
-      colors[i] = brightness;
-      colors[i + 1] = brightness;
-      colors[i + 2] = brightness;
-    }
-    return { positions, colors };
+    fetchIcons();
   }, []);
 
-  useFrame((state) => {
-    if (pointsRef.current) {
-      pointsRef.current.rotation.y = state.clock.elapsedTime * 0.02;
-      pointsRef.current.rotation.x = state.clock.elapsedTime * 0.01;
-    }
-  });
+  // Initialize dimensions
+  useEffect(() => {
+    const updateDimensions = () => {
+      setDimensions({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    };
 
-  const geometry = useMemo(() => {
-    const geo = new THREE.BufferGeometry();
-    geo.setAttribute(
-      "position",
-      new THREE.Float32BufferAttribute(positions, 3),
+    updateDimensions();
+    window.addEventListener("resize", updateDimensions);
+    return () => window.removeEventListener("resize", updateDimensions);
+  }, []);
+
+  // Load images and create icons when paths are available
+  useEffect(() => {
+    if (
+      iconPaths.length === 0 ||
+      dimensions.width === 0 ||
+      dimensions.height === 0
+    )
+      return;
+
+    // Calculate number of icons based on screen size
+    // Limit to max 2 instances per icon
+    const maxIcons = iconPaths.length * 2;
+    const iconCount = Math.floor(
+      (dimensions.width * dimensions.height) / 60000,
     );
-    geo.setAttribute("color", new THREE.Float32BufferAttribute(colors, 3));
-    return geo;
-  }, [positions, colors]);
+    const numIcons = Math.min(Math.max(iconCount, 6), maxIcons);
 
-  return (
-    <points ref={pointsRef} geometry={geometry}>
-      <pointsMaterial
-        size={0.03}
-        vertexColors
-        transparent
-        opacity={0.8}
-        sizeAttenuation
-      />
-    </points>
-  );
-}
+    // Create icons - each icon appears at most twice
+    const newIcons: FloatingIcon[] = [];
+    const iconUsageCount: Record<string, number> = {};
 
-// Connecting lines between points
-function ConnectionLines() {
-  const linesRef = useRef<THREE.LineSegments>(null);
+    // Shuffle icon paths to randomize which icons appear
+    const shuffledPaths = [...iconPaths].sort(() => Math.random() - 0.5);
 
-  const geometry = useMemo(() => {
-    const points: number[] = [];
-    const nodeCount = 20;
-    const nodes: THREE.Vector3[] = [];
+    let pathIndex = 0;
+    for (let i = 0; i < numIcons; i++) {
+      // Find next icon that hasn't been used twice
+      let iconSrc = shuffledPaths[pathIndex % shuffledPaths.length];
+      while ((iconUsageCount[iconSrc] || 0) >= 2) {
+        pathIndex++;
+        iconSrc = shuffledPaths[pathIndex % shuffledPaths.length];
+      }
 
-    // Create random nodes
-    for (let i = 0; i < nodeCount; i++) {
-      nodes.push(
-        new THREE.Vector3(
-          (Math.random() - 0.5) * 15,
-          (Math.random() - 0.5) * 10,
-          (Math.random() - 0.5) * 8 - 5,
-        ),
+      iconUsageCount[iconSrc] = (iconUsageCount[iconSrc] || 0) + 1;
+      newIcons.push(
+        createIcon(dimensions.width, dimensions.height, i, iconSrc),
       );
+      pathIndex++;
     }
 
-    // Connect nearby nodes
-    for (let i = 0; i < nodeCount; i++) {
-      for (let j = i + 1; j < nodeCount; j++) {
-        if (nodes[i].distanceTo(nodes[j]) < 6) {
-          points.push(nodes[i].x, nodes[i].y, nodes[i].z);
-          points.push(nodes[j].x, nodes[j].y, nodes[j].z);
+    // Load images for each icon
+    let loadedCount = 0;
+    newIcons.forEach((icon) => {
+      const img = new Image();
+      img.onload = () => {
+        icon.image = img;
+        loadedCount++;
+        if (loadedCount === newIcons.length) {
+          iconsRef.current = newIcons;
+          setImagesLoaded(true);
+        }
+      };
+      img.onerror = () => {
+        loadedCount++;
+        if (loadedCount === newIcons.length) {
+          iconsRef.current = newIcons.filter((i) => i.image !== null);
+          setImagesLoaded(true);
+        }
+      };
+      img.src = icon.iconSrc;
+    });
+  }, [iconPaths, dimensions.width, dimensions.height]);
+
+  // Animation loop
+  const animate = useCallback(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) {
+      animationRef.current = requestAnimationFrame(animate);
+      return;
+    }
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) {
+      animationRef.current = requestAnimationFrame(animate);
+      return;
+    }
+
+    const { width, height } = dimensions;
+    if (!width || !height) {
+      animationRef.current = requestAnimationFrame(animate);
+      return;
+    }
+
+    ctx.clearRect(0, 0, width, height);
+
+    const icons = iconsRef.current;
+
+    // Check collisions between all pairs
+    for (let i = 0; i < icons.length; i++) {
+      for (let j = i + 1; j < icons.length; j++) {
+        if (checkCollision(icons[i], icons[j])) {
+          resolveCollision(icons[i], icons[j]);
         }
       }
     }
 
-    const geo = new THREE.BufferGeometry();
-    geo.setAttribute("position", new THREE.Float32BufferAttribute(points, 3));
-    return geo;
-  }, []);
+    // Update positions and draw
+    for (const icon of icons) {
+      // Update position
+      icon.x += icon.vx;
+      icon.y += icon.vy;
+      icon.rotation += icon.rotationSpeed;
 
-  useFrame((state) => {
-    if (linesRef.current) {
-      linesRef.current.rotation.y = state.clock.elapsedTime * 0.02;
+      // Bounce off edges
+      if (icon.x <= icon.size / 2) {
+        icon.x = icon.size / 2;
+        icon.vx = Math.abs(icon.vx);
+      }
+      if (icon.x >= width - icon.size / 2) {
+        icon.x = width - icon.size / 2;
+        icon.vx = -Math.abs(icon.vx);
+      }
+      if (icon.y <= icon.size / 2) {
+        icon.y = icon.size / 2;
+        icon.vy = Math.abs(icon.vy);
+      }
+      if (icon.y >= height - icon.size / 2) {
+        icon.y = height - icon.size / 2;
+        icon.vy = -Math.abs(icon.vy);
+      }
+
+      // Apply slight friction
+      icon.vx *= 0.9998;
+      icon.vy *= 0.9998;
+
+      // Maintain minimum speed
+      const speed = Math.sqrt(icon.vx * icon.vx + icon.vy * icon.vy);
+      if (speed < 0.2) {
+        const angle = Math.random() * Math.PI * 2;
+        icon.vx = Math.cos(angle) * 0.4;
+        icon.vy = Math.sin(angle) * 0.4;
+      }
+
+      // Draw icon
+      if (icon.image) {
+        ctx.save();
+        ctx.translate(icon.x, icon.y);
+        ctx.rotate(icon.rotation);
+        ctx.globalAlpha = icon.opacity;
+
+        // Draw the SVG image
+        ctx.drawImage(
+          icon.image,
+          -icon.size / 2,
+          -icon.size / 2,
+          icon.size,
+          icon.size,
+        );
+
+        ctx.restore();
+      }
     }
-  });
+
+    animationRef.current = requestAnimationFrame(animate);
+  }, [dimensions]);
+
+  useEffect(() => {
+    if (!imagesLoaded) return;
+
+    animate();
+
+    return () => {
+      cancelAnimationFrame(animationRef.current);
+    };
+  }, [imagesLoaded, animate]);
 
   return (
-    <lineSegments ref={linesRef} geometry={geometry}>
-      <lineBasicMaterial color="#404040" transparent opacity={0.15} />
-    </lineSegments>
-  );
-}
-
-function Scene() {
-  return (
-    <>
-      {/* Lighting */}
-      <ambientLight intensity={0.3} />
-      <pointLight position={[10, 10, 10]} intensity={0.6} color="#ffffff" />
-      <pointLight position={[-10, -10, -10]} intensity={0.3} color="#606060" />
-      <spotLight position={[0, 10, 0]} angle={0.3} intensity={0.3} />
-
-      {/* Stars background */}
-      <Stars
-        radius={80}
-        depth={60}
-        count={2000}
-        factor={3}
-        saturation={0}
-        fade
-        speed={0.5}
+    <div className="absolute inset-0 bg-black overflow-hidden">
+      <canvas
+        ref={canvasRef}
+        width={dimensions.width}
+        height={dimensions.height}
+        className="absolute inset-0"
+        style={{ width: "100%", height: "100%" }}
       />
-
-      {/* Central Torus Knot */}
-      <TorusKnot />
-
-      {/* Orbiting Ring */}
-      <OrbitingRing />
-
-      {/* Glowing Spheres */}
-      <GlowingSphere position={[-4, 2, -4]} />
-      <GlowingSphere position={[4, -1, -5]} />
-
-      {/* Icosahedrons */}
-      <Icosahedron position={[-5, -2, -6]} scale={0.6} speed={0.2} />
-      <Icosahedron position={[5, 3, -7]} scale={0.5} speed={0.15} />
-      <Icosahedron position={[2, -3, -4]} scale={0.4} speed={0.25} />
-
-      {/* Dodecahedrons */}
-      <Dodecahedron position={[-3, 3, -8]} scale={0.5} />
-      <Dodecahedron position={[4, -2, -9]} scale={0.4} />
-
-      {/* Particle Field */}
-      <ParticleField />
-
-      {/* Connection Lines */}
-      <ConnectionLines />
-    </>
-  );
-}
-
-export default function HeroBackground() {
-  return (
-    <div className="absolute inset-0 bg-black">
-      <Canvas
-        camera={{ position: [0, 0, 8], fov: 60 }}
-        dpr={[1, 2]}
-        gl={{ antialias: true, alpha: true }}
-      >
-        <Scene />
-      </Canvas>
     </div>
   );
 }
