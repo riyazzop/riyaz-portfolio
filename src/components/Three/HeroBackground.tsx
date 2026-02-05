@@ -22,7 +22,11 @@ function createIcon(
   index: number,
   iconSrc: string,
 ): FloatingIcon {
-  const size = 80 + Math.random() * 70; // 80-150px
+  // Responsive size: smaller on mobile, larger on desktop
+  const isMobile = width < 768;
+  const baseSize = isMobile ? 40 : 80;
+  const sizeVariance = isMobile ? 30 : 70;
+  const size = baseSize + Math.random() * sizeVariance; // Mobile: 40-70px, Desktop: 80-150px
   return {
     id: `icon-${index}-${Date.now()}-${Math.random()}`,
     x: size + Math.random() * (width - size * 2),
