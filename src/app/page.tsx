@@ -2,20 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useModeStore } from "@/lib/store";
 import LoadingScreen from "@/components/shared/LoadingScreen";
-import ModeSelector from "@/components/shared/ModeSelector";
-import Terminal from "@/components/CLI/Terminal";
 import GUILayout from "@/components/GUI/GUILayout";
 
 export default function Home() {
-  const {
-    mode,
-    isLoading,
-    showModeSelector,
-    setIsLoading,
-    setShowModeSelector,
-  } = useModeStore();
+  const [isLoading, setIsLoading] = useState(true);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -23,13 +14,10 @@ export default function Home() {
     // Simulate loading
     const timer = setTimeout(() => {
       setIsLoading(false);
-      if (!mode) {
-        setShowModeSelector(true);
-      }
     }, 2500);
 
     return () => clearTimeout(timer);
-  }, [mode, setIsLoading, setShowModeSelector]);
+  }, []);
 
   // Prevent hydration mismatch
   if (!mounted) {
@@ -54,32 +42,7 @@ export default function Home() {
           </motion.div>
         )}
 
-        {!isLoading && showModeSelector && (
-          <motion.div
-            key="selector"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-          >
-            <ModeSelector />
-          </motion.div>
-        )}
-
-        {!isLoading && !showModeSelector && mode === "cli" && (
-          <motion.div
-            key="cli"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
-            className="min-h-screen"
-          >
-            <Terminal />
-          </motion.div>
-        )}
-
-        {!isLoading && !showModeSelector && mode === "gui" && (
+        {!isLoading && (
           <motion.div
             key="gui"
             initial={{ opacity: 0 }}

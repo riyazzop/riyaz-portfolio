@@ -135,7 +135,7 @@ export default function Hero() {
             }}
             whileTap={{ scale: 0.95 }}
             onClick={scrollToProjects}
-            className="flex items-center gap-2 px-8 py-4 bg-white text-black rounded-lg font-semibold hover:bg-gray-200 transition-colors"
+            className="flex items-center hover:text-white gap-2 px-8 py-4 bg-white text-black rounded-lg font-semibold hover:bg-gray-200 transition-colors"
           >
             <FolderOpen className="w-5 h-5" />
             View Projects
