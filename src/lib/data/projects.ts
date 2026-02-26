@@ -128,9 +128,9 @@ export const projects: Project[] = [
     ],
     category: "ml",
     date: "Jun 2025 – Jul 2025",
-    github: "",
-    demo: "",
-    demoVideo: "",
+    github: "https://github.com/riyazzop/diabetes-predictor",
+    demo: "https://res.cloudinary.com/dpjn01kfa/image/upload/v1772078278/Screenshot_2026-02-26_092258_ynizz6.png",
+    demoVideo: "https://res.cloudinary.com/dpjn01kfa/video/upload/v1772078395/diabetes_shnza9.mp4",
     image: "/projects/diabetes-prediction.png",
   },
 ];
