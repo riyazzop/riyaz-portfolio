@@ -5,6 +5,7 @@ import { motion, useInView } from "framer-motion";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import { projects } from "@/lib/data/projects";
+import ImageWithFallback from "@/components/shared/ImageWithFallback";
 
 // Lazy load 3D background for performance
 const MinimalBackground = dynamic(
@@ -91,18 +92,11 @@ export default function Projects() {
             >
               {/* Project image */}
               <div className="aspect-video bg-linear-to-br from-gray-800 to-gray-900 flex items-center justify-center relative overflow-hidden">
-                {project.image ? (
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                  />
-                ) : (
-                  <span className="text-4xl font-bold text-gray-700 group-hover:scale-110 transition-transform">
-                    {project.shortTitle}
-                  </span>
-                )}
-                {/* Overlay removed as per request */}
+                <ImageWithFallback
+                  src={project.image || ""}
+                  alt={project.title}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                />
               </div>
 
               {/* Content */}

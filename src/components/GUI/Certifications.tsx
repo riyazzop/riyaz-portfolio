@@ -5,6 +5,7 @@ import { motion, useInView } from "framer-motion";
 import { Award, X, Image as ImageIcon } from "lucide-react";
 import { certifications } from "@/lib/data/personal";
 import { createPortal } from "react-dom";
+import ImageWithFallback from "@/components/shared/ImageWithFallback";
 
 // Modal component that renders in a portal
 function CertificateModal({
@@ -77,7 +78,7 @@ function CertificateModal({
         >
           <X size={32} />
         </button>
-        <img
+        <ImageWithFallback
           src={imageSrc}
           alt="Certificate"
           style={{
@@ -193,10 +194,18 @@ export default function Certifications() {
                         e.stopPropagation();
                         handleViewCertificate(cert.image as string);
                       }}
-                      className="inline-flex items-center justify-center gap-2 px-4 py-2 text-sm bg-gray-600 hover:bg-gray-500 text-white rounded-lg transition-colors cursor-pointer mt-2"
+                      className="relative w-full h-24 rounded-lg overflow-hidden border border-gray-700 hover:border-gray-500 transition-colors group/thumb mt-2"
                     >
-                      <ImageIcon className="w-4 h-4" />
-                      View Certificate
+                      <ImageWithFallback
+                        src={cert.image}
+                        alt={cert.name}
+                        className="w-full h-full object-cover transition-transform duration-300 group-hover/thumb:scale-105"
+                      />
+                      {/* View overlay */}
+                      <div className="absolute inset-0 bg-black/50 opacity-0 group-hover/thumb:opacity-100 transition-opacity flex items-center justify-center gap-2 text-white text-sm font-medium">
+                        <ImageIcon className="w-4 h-4" />
+                        View Certificate
+                      </div>
                     </button>
                   )}
                 </div>

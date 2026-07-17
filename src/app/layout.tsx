@@ -13,30 +13,33 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Shaik Riyaz Basha | Full-Stack Developer",
+  title: "Shaik Riyaz Basha | Backend & Distributed Systems Engineer",
   description:
-    "Portfolio of Shaik Riyaz Basha - Full-stack developer specializing in React, Node.js, microservices, and machine learning.",
+    "Portfolio of Shaik Riyaz Basha - AWS Certified Solutions Architect specializing in backend engineering, distributed systems, microservices, and system design (LLD/HLD).",
   keywords: [
-    "Full-Stack Developer",
-    "React",
+    "Backend Engineer",
+    "Distributed Systems",
     "Node.js",
     "Microservices",
-    "Machine Learning",
-    "Web Development",
+    "AWS Certified Solutions Architect",
+    "System Design",
+    "Cloud Architecture",
+    "React",
+    "TypeScript",
   ],
   authors: [{ name: "Shaik Riyaz Basha" }],
   openGraph: {
-    title: "Shaik Riyaz Basha | Full-Stack Developer",
+    title: "Shaik Riyaz Basha | Backend & Distributed Systems Engineer",
     description:
-      "Interactive portfolio showcasing projects in React, Node.js, and AI",
+      "AWS Certified Solutions Architect building scalable distributed systems and cloud-native applications.",
     url: "https://riyazbasha.dev",
     siteName: "Shaik Riyaz Basha Portfolio",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Shaik Riyaz Basha | Full-Stack Developer",
-    description: "Interactive CLI/GUI portfolio",
+    title: "Shaik Riyaz Basha | Backend & Distributed Systems Engineer",
+    description: "AWS Certified Solutions Architect | Distributed Systems | Node.js | Microservices",
   },
   robots: "index, follow",
 };

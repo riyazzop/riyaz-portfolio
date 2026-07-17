@@ -2,7 +2,7 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import { Code2, Layout, Server, Database, Brain, Wrench } from "lucide-react";
+import { Code2, Layout, Server, Database, Cloud, Network, Layers } from "lucide-react";
 import { skillCategories } from "@/lib/data/skills";
 
 const iconMap: Record<string, React.ReactNode> = {
@@ -10,8 +10,9 @@ const iconMap: Record<string, React.ReactNode> = {
   Layout: <Layout className="w-6 h-6" />,
   Server: <Server className="w-6 h-6" />,
   Database: <Database className="w-6 h-6" />,
-  Brain: <Brain className="w-6 h-6" />,
-  Wrench: <Wrench className="w-6 h-6" />,
+  Cloud: <Cloud className="w-6 h-6" />,
+  Network: <Network className="w-6 h-6" />,
+  Layers: <Layers className="w-6 h-6" />,
 };
 
 export default function Skills() {

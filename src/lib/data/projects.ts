@@ -17,6 +17,45 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    id: "5",
+    slug: "distributed-cache",
+    title: "Self-Healing Distributed Cache",
+    shortTitle: "Distributed Cache",
+    description:
+      "A fault-tolerant distributed caching system across 3 nodes using circular replication topology, featuring a self-healing coordinator, LRU eviction, and automatic node recovery.",
+    highlights: [
+      "Engineered fault-tolerant distributed cache across 3 nodes using circular replication topology, ensuring minimal data loss on node failure via primary/replica key distribution",
+      "Built a self-healing coordinator that detects failures via heartbeat monitoring, auto-restarts dead nodes using Node.js child_process, and restores data from surviving replicas",
+      "Integrated LRU eviction policy using insertion-order-aware Map, evicting least-recently-used entries under memory pressure to prevent unbounded cache growth",
+      "Reduced per-key memory footprint by ~60% by storing only (key, value, type) per entry and offloading ownership resolution to coordinator topology",
+    ],
+    techStack: ["Node.js", "TypeScript", "Express.js", "Docker"],
+    category: "backend",
+    date: "Jun 2026 – Present",
+    github: "https://github.com/riyazzop/self-healing-distributed-cache",
+    demo: "#",
+    image: "/projects/distributed-cache.png",
+  },
+  {
+    id: "6",
+    slug: "url-shortener",
+    title: "URL Shortener",
+    shortTitle: "URL Shortener",
+    description:
+      "A production-grade URL shortening service with collision-free ID generation via Redis atomic INCR and Base62 encoding, MVC architecture with Repository pattern, and JWT-secured REST API.",
+    highlights: [
+      "Implemented URL shortening engine using Redis atomic INCR for collision-free ID generation combined with Base62 encoding, replicating the core architecture used by production-grade link shorteners",
+      "Designed MVC-style backend with Repository pattern using raw PostgreSQL queries, eliminating ORM overhead and improving query performance",
+      "Secured the API with JWT authentication, bcrypt password hashing, Helmet HTTP headers, and express-rate-limit middleware to prevent abuse at scale",
+    ],
+    techStack: ["Next.js", "TypeScript", "Node.js", "Express.js", "PostgreSQL", "Redis"],
+    category: "fullstack",
+    date: "Feb 2026 – Mar 2026",
+    github: "https://github.com/riyazzop/url-shortener",
+    demo: "#",
+    image: "/projects/url-shortener.png",
+  },
+  {
     id: "1",
     slug: "chat-app",
     title: "Real-Time Chat Application",
@@ -24,10 +63,9 @@ export const projects: Project[] = [
     description:
       "A scalable real-time chat application built with microservices architecture, featuring event-driven communication and high performance.",
     highlights: [
-      "Built event-driven architecture using RabbitMQ for inter-service messaging with retry logic and dead-letter queues, achieving zero message loss",
-      "Designed user presence system with Redis pub/sub for real-time online/offline status, supporting 500+ concurrent users",
-      "Implemented WebSocket-based real-time messaging with typing indicators, read receipts, and message reactions",
-      "Reduced server load by 40% through efficient connection pooling and message batching strategies",
+      "Architected distributed microservices with RabbitMQ (including dead-letter queues) ensuring reliable event-driven communication across services, containerized via Docker for consistent deployment",
+      "Engineered WebSocket-based messaging system supporting 500+ concurrent users using Redis caching, rate limiting, and pub/sub messaging patterns",
+      "Reduced server load by 40% via MongoDB query optimization, collection indexing, and connection pooling strategies",
     ],
     techStack: [
       "Node.js",
@@ -39,7 +77,7 @@ export const projects: Project[] = [
       "React",
     ],
     category: "fullstack",
-    date: "Dec 2025 - Jan 2026",
+    date: "Dec 2025 – Jan 2026",
     github: "https://github.com/riyazzop/chat-backend",
     demo: "https://chat-frontend-two-gamma.vercel.app",
     demoVideo:

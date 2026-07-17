@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450" viewBox="0 0 800 450" fill="none">
+  <!-- Background -->
+  <rect width="800" height="450" fill="#0a0a0a"/>
+
+  <!-- Subtle grid pattern -->
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1a1a1a" stroke-width="1"/>
+    </pattern>
+    <linearGradient id="iconGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4b5563"/>
+      <stop offset="100%" stop-color="#1f2937"/>
+    </linearGradient>
+    <linearGradient id="textGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#6b7280"/>
+      <stop offset="100%" stop-color="#4b5563"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="450" fill="url(#grid)"/>
+
+  <!-- Center icon container -->
+  <rect x="330" y="145" width="140" height="120" rx="16" fill="#111111" stroke="#262626" stroke-width="1.5"/>
+
+  <!-- Image icon — frame -->
+  <rect x="352" y="164" width="96" height="72" rx="6" fill="none" stroke="#374151" stroke-width="2" stroke-dasharray="5 3"/>
+
+  <!-- Mountain / landscape shape -->
+  <polygon points="375,218 400,185 425,218" fill="#374151"/>
+  <polygon points="400,218 427,192 448,218" fill="#2d3748"/>
+
+  <!-- Sun circle -->
+  <circle cx="428" cy="176" r="7" fill="#374151"/>
+
+  <!-- Bottom label -->
+  <text x="400" y="300" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="14" font-weight="500" fill="url(#textGrad)" letter-spacing="2">
+    NO IMAGE AVAILABLE
+  </text>
+
+  <!-- Decorative lines -->
+  <line x1="300" y1="316" x2="355" y2="316" stroke="#262626" stroke-width="1"/>
+  <line x1="445" y1="316" x2="500" y2="316" stroke="#262626" stroke-width="1"/>
+
+  <!-- Corner accents -->
+  <path d="M 20 40 L 20 20 L 40 20" stroke="#262626" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <path d="M 760 40 L 760 20 L 740 20" stroke="#262626" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <path d="M 20 410 L 20 430 L 40 430" stroke="#262626" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <path d="M 760 410 L 760 430 L 740 430" stroke="#262626" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+</svg>

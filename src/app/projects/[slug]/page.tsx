@@ -8,6 +8,7 @@ import { useParams } from "next/navigation";
 import { getProjectBySlug } from "@/lib/data/projects";
 import VideoPlayer from "@/components/GUI/VideoPlayer";
 import DemoModal from "@/components/GUI/DemoModal";
+import ImageWithFallback from "@/components/shared/ImageWithFallback";
 
 export default function ProjectPage() {
   const params = useParams();
@@ -87,17 +88,11 @@ export default function ProjectPage() {
           transition={{ delay: 0.2 }}
           className="mb-12 border p-[2px] rounded-2xl overflow-hidden bg-linear-to-br from-gray-800 to-gray-900 aspect-video flex items-center justify-center relative"
         >
-          {project.image ? (
-            <img
-              src={project.image}
-              alt={project.title}
-              className="w-full h-full object-cover"
-            />
-          ) : (
-            <span className="text-6xl font-bold text-gray-700">
-              {project.shortTitle}
-            </span>
-          )}
+          <ImageWithFallback
+            src={project.image || ""}
+            alt={project.title}
+            className="w-full h-full object-cover"
+          />
         </motion.div>
 
         {/* Description */}

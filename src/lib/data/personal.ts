@@ -1,26 +1,26 @@
 export const personalInfo = {
   name: "Shaik Riyaz",
-  title: "Full-Stack Developer",
-  subtitle: "AI Enthusiast",
+  title: "Backend & Distributed Systems Engineer",
+  subtitle: "AWS Certified Solutions Architect",
   email: "riyaz.shaikit@gmail.com",
-  phone: "+91 630 238 8848",
+  phone: "+91 63023 88848",
   location: "Kurnool, Andhra Pradesh, India",
   github: "https://github.com/riyazzop",
   leetcode: "https://leetcode.com/u/riyaz_op",
   linkedin: "https://www.linkedin.com/in/shaik-riyaz-950866276/",
   twitter: "https://twitter.com/Riyaz63023",
-  summary: `Full-stack developer with production experience building scalable web applications using React, Node.js, and microservices architecture. Specialized in real-time systems, API integration, and machine learning deployment. Proven ability to design end-to-end workflows from data ingestion to user-facing features.`,
-  shortSummary: `Building scalable web apps with React, Node.js & microservices. Passionate about real-time systems and machine learning.`,
+  summary: `Final-year B.Tech CS (AI) student specializing in backend & distributed systems, with hands-on experience building scalable microservices and cloud-native applications. AWS Certified Solutions Architect with strong foundations in system design (LLD/HLD), design patterns, and performance optimization.`,
+  shortSummary: `Building scalable distributed systems with Node.js & microservices. AWS Certified Solutions Architect passionate about system design and cloud-native architecture.`,
   availability: "Available for Internships",
-  currentlyLearning: "System Design & Cloud Architecture",
+  currentlyLearning: "System Design (LLD/HLD) & AWS Architecture",
 };
 
 export const education = [
   {
     degree: "B.Tech in Computer Science and Engineering (AI)",
     institution: "G. Pullaiah College of Engineering & Technology",
-    duration: "Oct 2023 – Mar 2027",
-    grade: "CGPA: 8.72/10.0",
+    duration: "Oct 2023 – May 2027",
+    grade: "CGPA: 8.44/10.0",
     icon: "🎓",
   },
   {
@@ -34,17 +34,17 @@ export const education = [
 
 export const certifications = [
   {
-    name: "Supervised Machine Learning: Regression and Classification",
-    issuer: "Coursera",
-    date: "2025",
+    name: "AWS Certified Solutions Architect – Associate",
+    issuer: "Amazon Web Services",
+    date: "June 2026",
     topics: [
-      "Linear/logistic regression",
-      "Gradient descent",
-      "Regularization (L1/L2)",
-      "Model evaluation metrics",
+      "EC2, S3, RDS, VPC, IAM",
+      "High Availability & Fault Tolerance",
+      "Scalable Cloud Architecture",
+      "Security Best Practices",
     ],
-    link: "https://coursera.org/share/0b4ffa500bd8f6c5dc3399efda9dd771",
-    image: "/certifications/supervised-ml-coursera.jpg",
+    link: "#",
+    image: "/certifications/aws-solutions-architect.jpg",
   },
   {
     name: "AWS Cloud Practitioner Essentials",
@@ -59,6 +59,19 @@ export const certifications = [
     ],
     link: "#",
     image: "/certifications/aws-cloud-practitioner.jpg",
+  },
+  {
+    name: "Supervised Machine Learning: Regression and Classification",
+    issuer: "Coursera",
+    date: "2025",
+    topics: [
+      "Linear/logistic regression",
+      "Gradient descent",
+      "Regularization (L1/L2)",
+      "Model evaluation metrics",
+    ],
+    link: "https://coursera.org/share/0b4ffa500bd8f6c5dc3399efda9dd771",
+    image: "/certifications/supervised-ml-coursera.jpg",
   },
   {
     name: "Java Programming - 2025",
@@ -103,9 +116,16 @@ export const certifications = [
 
 export const stats = [
   { label: "GitHub Contributions", value: "500+", icon: "GitCommit" },
-  { label: "LeetCode Problems", value: "150+", icon: "Code" },
+  { label: "LeetCode Problems", value: "250+", icon: "Code" },
   { label: "Projects Completed", value: "10+", icon: "Folder" },
-  { label: "Technologies", value: "15+", icon: "Layers" },
+  { label: "AWS Certified", value: "SAA", icon: "Cloud" },
+];
+
+export const achievements = [
+  "1st Place in an inter-college coding competition (700+ participants)",
+  "1st Rank in a college coding assessment (350+ participants)",
+  "Volunteered as Technical Team Member at AI Expo 2026",
+  "LeetCode: 250+ problems solved across DSA fundamentals",
 ];
 
 export const funFacts = [

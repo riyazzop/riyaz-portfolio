@@ -5,14 +5,24 @@ import { motion, AnimatePresence } from "framer-motion";
 import LoadingScreen from "@/components/shared/LoadingScreen";
 import GUILayout from "@/components/GUI/GUILayout";
 
+const SESSION_KEY = "portfolio_loaded";
+
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
-    // Simulate loading
+
+    // If already visited in this session, skip loading immediately
+    if (sessionStorage.getItem(SESSION_KEY)) {
+      setIsLoading(false);
+      return;
+    }
+
+    // First visit — show loading screen, then mark as seen
     const timer = setTimeout(() => {
+      sessionStorage.setItem(SESSION_KEY, "1");
       setIsLoading(false);
     }, 2500);
 
